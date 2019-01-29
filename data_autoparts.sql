@@ -27,10 +27,7 @@ DROP TABLE IF EXISTS `tbl_car_model`;
 CREATE TABLE `tbl_car_model` (
   `model_id` int(5) NOT NULL AUTO_INCREMENT,
   `model_name` varchar(100) NOT NULL,
-  `maker_id` int(5) DEFAULT NULL,
-  PRIMARY KEY (`model_id`),
-  KEY `maker_id` (`maker_id`),
-  CONSTRAINT `tbl_car_model_ibfk_1` FOREIGN KEY (`maker_id`) REFERENCES `tbl_car_maker` (`maker_id`)
+  PRIMARY KEY (`model_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -42,15 +39,29 @@ DROP TABLE IF EXISTS `tbl_car_part`;
 CREATE TABLE `tbl_car_part` (
   `part_id` int(5) NOT NULL AUTO_INCREMENT,
   `part_name` varchar(100) NOT NULL,
-  `model_id` int(5) DEFAULT NULL,
-  PRIMARY KEY (`part_id`),
-  KEY `model_id` (`model_id`),
-  CONSTRAINT `tbl_car_part_ibfk_1` FOREIGN KEY (`model_id`) REFERENCES `tbl_car_model` (`model_id`)
+  PRIMARY KEY (`part_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40000 ALTER TABLE `tbl_car_part` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tbl_car_part` ENABLE KEYS */;
+DROP TABLE IF EXISTS `tbl_inventory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tbl_inventory` (
+  `inv_id` int(5) NOT NULL AUTO_INCREMENT,
+  `part_id` int(5) NOT NULL,
+  `model_id` int(5) NOT NULL,
+  PRIMARY KEY (`inv_id`),
+  KEY `part_id` (`part_id`),
+  KEY `model_id` (`model_id`),
+  CONSTRAINT `tbl_inventory_ibfk_1` FOREIGN KEY (`part_id`) REFERENCES `tbl_car_part` (`part_id`),
+  CONSTRAINT `tbl_inventory_ibfk_2` FOREIGN KEY (`model_id`) REFERENCES `tbl_car_model` (`model_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40000 ALTER TABLE `tbl_inventory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_inventory` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
