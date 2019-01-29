@@ -43,7 +43,7 @@
 	$n = 0;
 
 	#while($data = fgetcsv($file))
-	for($i=0;$i<500;$i++) { 
+	for($i=0;$i<50;$i++) { 
 		$data = fgetcsv($file);
 		#print_r($data);
 		$data[4] = str_replace('Used ', '', $data[4]);
@@ -63,7 +63,7 @@
 		#$row=$result->fetch_assoc();
 		#$mid=$row['maker_id'];
 		if(!ifExists($conn,'model',$data[6])) {
-			$sql = "INSERT INTO tbl_car_model(model_name) VALUES(\"".$data[6]."\")";
+			$sql = "INSERT INTO tbl_car_model(model_name,maker_id) VALUES(\"".$data[6]."\",\"".extractId($conn,'maker',$data[4])."\")";
 			$result = $conn->query($sql);
 		}
 		#$sql = "SELECT model_id FROM tbl_car_model WHERE model_name=\"".$data[6]."\"";

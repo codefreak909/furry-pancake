@@ -1,4 +1,20 @@
 <?php
+	function extractId($conn, $node, $item) {
+		$sql = "SELECT ".$node."_id FROM tbl_car_".$node." WHERE ".$node."_name=\"".$item."\"";
+		#echo $sql;
+		$result = $conn->query($sql);
+		if($result) {
+			if (mysqli_num_rows($result)>0) {
+				$row = $result->fetch_assoc();
+				#echo "wow";
+				return $row[$node.'_id'];
+			}
+			else {
+				#echo "nowow";
+				return 0;
+			}
+		}
+	}
 	$conn = new mysqli('localhost','dude','wowdudedb','project_auto');
 	if (isset($_GET['maker'])) {
 		$maker = $_GET['maker'];
@@ -10,7 +26,7 @@
 		}
 	} elseif (isset($_GET['model'])) {
 		$model = $_GET['model'];
-		$sql="SELECT ct.part_name as part FROM tbl_car_part ct INNER JOIN tbl_car_model s ON ct.model_id = s.model_id WHERE s.model_name=\"$model\"";
+		$sql="SELECT p.part_name as part FROM tbl_car_part p INNER JOIN tbl_inventory i ON p.part_id = i.part_id WHERE i.model_id=\"".extractId($conn,'model',$model)."\"";
 		$result=$conn->query($sql);
 		echo "<option disabled selected>Part</option>";
 		while ($row=$result->fetch_assoc()) {
